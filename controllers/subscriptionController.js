@@ -6,7 +6,7 @@ const subscribe = (req, res) => {
     const { plan_id } = req.body;
     const utilisateur_id = req.user.id;
 
-    planModel.getPlanById(plan_id, (err, result) => {
+    void planModel.getPlanById(plan_id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -55,7 +55,7 @@ const getMySubscription = (req, res) => {
 
     const utilisateur_id = req.user.id;
 
-    subscriptionModel.getActiveSubscription(utilisateur_id, (err, result) => {
+    void subscriptionModel.getActiveSubscription(utilisateur_id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);

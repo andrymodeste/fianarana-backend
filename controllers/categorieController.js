@@ -3,7 +3,7 @@ const matiereModel = require("../models/matiereModel");
 
 const getAllCategories = (req, res) => {
 
-    categorieModel.getAllCategories((err, result) => {
+    void categorieModel.getAllCategories((err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -21,7 +21,7 @@ const getCategorieById = (req, res) => {
 
     const { id } = req.params;
 
-    categorieModel.getCategorieById(id, (err, result) => {
+    void categorieModel.getCategorieById(id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -47,7 +47,7 @@ const createCategorie = (req, res) => {
         return res.status(400).json({ message: "Le nom de la catégorie est requis" });
     }
 
-    categorieModel.createCategorie({ nom, description, icone_url, ordre }, (err, result) => {
+    void categorieModel.createCategorie({ nom, description, icone_url, ordre }, (err, result) => {
 
         if (err) {
             if (err.code === "ER_DUP_ENTRY") {
@@ -74,7 +74,7 @@ const updateCategorie = (req, res) => {
         return res.status(400).json({ message: "Le nom de la catégorie est requis" });
     }
 
-    categorieModel.updateCategorie(id, { nom, description, icone_url, ordre }, (err, result) => {
+    void categorieModel.updateCategorie(id, { nom, description, icone_url, ordre }, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -94,7 +94,7 @@ const deleteCategorie = (req, res) => {
 
     const { id } = req.params;
 
-    categorieModel.deleteCategorie(id, (err, result) => {
+    void categorieModel.deleteCategorie(id, (err, result) => {
 
         if (err) {
             if (err.code === "ER_ROW_IS_REFERENCED_2") {
@@ -117,7 +117,7 @@ const deleteCategorie = (req, res) => {
 
 const getAllMatieres = (req, res) => {
 
-    matiereModel.getAllMatieres((err, result) => {
+    void matiereModel.getAllMatieres((err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -135,7 +135,7 @@ const getMatieresByCategorie = (req, res) => {
 
     const { categorieId } = req.params;
 
-    matiereModel.getMatieresByCategorie(categorieId, (err, result) => {
+    void matiereModel.getMatieresByCategorie(categorieId, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -153,7 +153,7 @@ const getMatiereById = (req, res) => {
 
     const { id } = req.params;
 
-    matiereModel.getMatiereById(id, (err, result) => {
+    void matiereModel.getMatiereById(id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -183,7 +183,7 @@ const createMatiere = (req, res) => {
         return res.status(400).json({ message: "La catégorie est requise" });
     }
 
-    matiereModel.createMatiere({ categorie_id, nom, description, couleur, icone_url }, (err, result) => {
+    void matiereModel.createMatiere({ categorie_id, nom, description, couleur, icone_url }, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -207,7 +207,7 @@ const updateMatiere = (req, res) => {
         return res.status(400).json({ message: "Le nom de la matière est requis" });
     }
 
-    matiereModel.updateMatiere(id, { categorie_id, nom, description, couleur, icone_url }, (err, result) => {
+    void matiereModel.updateMatiere(id, { categorie_id, nom, description, couleur, icone_url }, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -227,7 +227,7 @@ const deleteMatiere = (req, res) => {
 
     const { id } = req.params;
 
-    matiereModel.deleteMatiere(id, (err, result) => {
+    void matiereModel.deleteMatiere(id, (err, result) => {
 
         if (err) {
             if (err.code === "ER_ROW_IS_REFERENCED_2") {

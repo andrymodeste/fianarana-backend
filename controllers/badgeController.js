@@ -2,7 +2,7 @@ const badgeModel = require("../models/badgeModel");
 
 const getAllBadges = (req, res) => {
 
-    badgeModel.getAllBadges((err, result) => {
+    void badgeModel.getAllBadges((err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -18,7 +18,7 @@ const getAllBadges = (req, res) => {
 
 const getMyBadges = (req, res) => {
 
-    badgeModel.getBadgesByEleve(req.user.id, (err, result) => {
+    void badgeModel.getBadgesByEleve(req.user.id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);

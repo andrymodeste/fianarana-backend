@@ -1,11 +1,12 @@
 const db = require("../config/db");
 
 const createLesson = (lesson, cb) => {
-    const sql = `INSERT INTO lecons (cours_id, titre, description, video_url, pdf_url, ordre, duree_minutes, est_gratuite, est_telechargeable)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO lecons (cours_id, titre, description, video_url, pdf_url, ordre, duree_minutes, est_gratuite, est_telechargeable, statut)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     db.query(sql, [lesson.cours_id, lesson.titre, lesson.description || null, lesson.video_url || null,
         lesson.pdf_url || null, lesson.ordre, lesson.duree_minutes || 0, lesson.est_gratuite || 0,
-        lesson.est_telechargeable !== undefined ? lesson.est_telechargeable : 1], cb);
+        lesson.est_telechargeable !== undefined ? lesson.est_telechargeable : 1,
+        lesson.statut || 'valide'], cb);
 };
 
 const getLessonsByCourse = (coursId, cb) =>
@@ -33,4 +34,18 @@ const reorderLessons = (lessons, cb) => {
     Promise.all(promises).then(() => cb(null)).catch(cb);
 };
 
-module.exports = { createLesson, getLessonsByCourse, getLessonById, updateLesson, deleteLesson, reorderLessons };
+const getPendingLessons = (cb) => {
+    const sql = `SELECT l.*, c.titre AS cours_titre, u.nom AS professeur_nom, u.prenom AS professeur_prenom
+                 FROM lecons l
+                 JOIN cours c ON l.cours_id = c.id
+                 JOIN utilisateurs u ON c.professeur_id = u.id
+                 WHERE l.statut = 'en_attente'
+                 ORDER BY l.cree_le ASC`;
+    db.query(sql, cb);
+};
+
+const validateLesson = (id, cb) => db.query("UPDATE lecons SET statut='valide' WHERE id=?", [id], cb);
+
+const rejectLesson = (id, cb) => db.query("DELETE FROM lecons WHERE id=?", [id], cb);
+
+module.exports = { createLesson, getLessonsByCourse, getLessonById, updateLesson, deleteLesson, reorderLessons, getPendingLessons, validateLesson, rejectLesson };

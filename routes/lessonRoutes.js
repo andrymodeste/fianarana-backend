@@ -3,9 +3,10 @@ const router = express.Router();
 const lessonController = require("../controllers/lessonController");
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
+const profVerified = require("../middleware/professorVerifiedMiddleware");
 const upload = require("../middleware/uploadMiddleware");
 
-const prof = [authMiddleware, roleMiddleware("professeur")];
+const prof = [authMiddleware, roleMiddleware("professeur"), profVerified];
 
 router.get("/cours/:coursId",   lessonController.getLessonsByCourse);
 router.get("/:id",              authMiddleware, lessonController.getLessonById);

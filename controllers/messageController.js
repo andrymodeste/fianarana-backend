@@ -15,7 +15,7 @@ const sendMessage = (req, res) => {
         contenu
     };
 
-    messageModel.sendMessage(msg, (err, result) => {
+    void messageModel.sendMessage(msg, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -34,7 +34,7 @@ const getConversation = (req, res) => {
 
     const { contactId } = req.params;
 
-    messageModel.getConversation(req.user.id, contactId, (err, result) => {
+    void messageModel.getConversation(req.user.id, contactId, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -52,7 +52,7 @@ const getConversation = (req, res) => {
 
 const getConversationsList = (req, res) => {
 
-    messageModel.getConversationsList(req.user.id, (err, result) => {
+    void messageModel.getConversationsList(req.user.id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -66,8 +66,52 @@ const getConversationsList = (req, res) => {
 
 };
 
+const getContacts = (req, res) => {
+    void messageModel.getContactsForUser(req.user.id, req.user.role, (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json({ contacts: result });
+    });
+};
+
+// Modifier un message (seulement l'expéditeur)
+const updateMsg = (req, res) => {
+    const { id } = req.params;
+    const { contenu } = req.body;
+    if (!contenu || !contenu.trim()) return void res.status(400).json({ message: "Le contenu est requis" });
+
+    void messageModel.updateMessage(id, req.user.id, contenu.trim(), (err, result) => {
+        if (err) return res.status(500).json(err);
+        if (result.affectedRows === 0) return res.status(403).json({ message: "Action non autorisée" });
+        res.json({ message: "Message modifié" });
+    });
+};
+
+// Retirer pour moi
+const deleteForMe = (req, res) => {
+    const { id } = req.params;
+    void messageModel.deleteForMe(id, req.user.id, (err, result) => {
+        if (err) return res.status(500).json(err);
+        if (result.affectedRows === 0) return res.status(403).json({ message: "Action non autorisée" });
+        res.json({ message: "Message retiré" });
+    });
+};
+
+// Supprimer pour tout le monde (seulement l'expéditeur)
+const deleteForAll = (req, res) => {
+    const { id } = req.params;
+    void messageModel.deleteForAll(id, req.user.id, (err, result) => {
+        if (err) return res.status(500).json(err);
+        if (result.affectedRows === 0) return res.status(403).json({ message: "Action non autorisée" });
+        res.json({ message: "Message supprimé pour tous" });
+    });
+};
+
 module.exports = {
     sendMessage,
     getConversation,
-    getConversationsList
+    getConversationsList,
+    getContacts,
+    updateMsg,
+    deleteForMe,
+    deleteForAll
 };

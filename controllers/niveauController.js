@@ -2,7 +2,7 @@ const niveauModel = require("../models/niveauModel");
 
 const getAllNiveaux = (req, res) => {
 
-    niveauModel.getAllNiveaux((err, result) => {
+    void niveauModel.getAllNiveaux((err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -20,7 +20,7 @@ const getNiveauById = (req, res) => {
 
     const { id } = req.params;
 
-    niveauModel.getNiveauById(id, (err, result) => {
+    void niveauModel.getNiveauById(id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -50,7 +50,7 @@ const createNiveau = (req, res) => {
         return res.status(400).json({ message: "L'ordre est requis" });
     }
 
-    niveauModel.createNiveau({ nom, description, ordre }, (err, result) => {
+    void niveauModel.createNiveau({ nom, description, ordre }, (err, result) => {
 
         if (err) {
             if (err.code === "ER_DUP_ENTRY") {
@@ -77,7 +77,7 @@ const updateNiveau = (req, res) => {
         return res.status(400).json({ message: "Le nom du niveau est requis" });
     }
 
-    niveauModel.updateNiveau(id, { nom, description, ordre }, (err, result) => {
+    void niveauModel.updateNiveau(id, { nom, description, ordre }, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -97,7 +97,7 @@ const deleteNiveau = (req, res) => {
 
     const { id } = req.params;
 
-    niveauModel.deleteNiveau(id, (err, result) => {
+    void niveauModel.deleteNiveau(id, (err, result) => {
 
         if (err) {
             if (err.code === "ER_ROW_IS_REFERENCED_2") {

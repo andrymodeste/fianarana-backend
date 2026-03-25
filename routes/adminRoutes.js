@@ -22,6 +22,10 @@ router.put("/professeurs/:id/valider",   ...admin, adminController.validateProfe
 router.get("/cours/en-attente",          ...admin, adminController.getPendingCourses);
 router.put("/cours/:id/valider",         ...admin, adminController.validateCourse);
 
+// Lessons
+router.get("/lecons/en-attente",         ...admin, adminController.getPendingLessons);
+router.put("/lecons/:id/valider",        ...admin, adminController.validateLesson);
+
 // Stats
 router.get("/dashboard",                 ...admin, adminController.getDashboardStats);
 

@@ -10,7 +10,7 @@ const createQuiz = (req, res) => {
         return res.status(400).json({ message: "La leçon et le titre sont requis" });
     }
 
-    quizModel.createQuiz({ lecon_id, titre, description, duree_secondes, nombre_tentatives, score_minimum }, (err, result) => {
+    void quizModel.createQuiz({ lecon_id, titre, description, duree_secondes, nombre_tentatives, score_minimum }, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -29,7 +29,7 @@ const getQuizByLecon = (req, res) => {
 
     const { leconId } = req.params;
 
-    quizModel.getQuizByLecon(leconId, (err, result) => {
+    void quizModel.getQuizByLecon(leconId, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -47,7 +47,7 @@ const getQuizWithQuestions = (req, res) => {
 
     const { quizId } = req.params;
 
-    quizModel.getQuizWithQuestions(quizId, (err, rows) => {
+    void quizModel.getQuizWithQuestions(quizId, (err, rows) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -112,7 +112,7 @@ const addQuestion = (req, res) => {
         return res.status(400).json({ message: "Le quiz, l'énoncé et le type sont requis" });
     }
 
-    questionModel.createQuestion({ quiz_id, enonce, type_question, points, ordre, image_url, explication_globale }, (err, result) => {
+    void questionModel.createQuestion({ quiz_id, enonce, type_question, points, ordre, image_url, explication_globale }, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -150,7 +150,7 @@ const submitQuiz = (req, res) => {
     const { quiz_id, reponses, duree_secondes } = req.body;
     const eleve_id = req.user.id;
 
-    quizModel.getQuizById(quiz_id, (err, quizRows) => {
+    void quizModel.getQuizById(quiz_id, (err, quizRows) => {
 
         if (err) return res.status(500).json(err);
         if (quizRows.length === 0) return res.status(404).json({ message: "Quiz introuvable" });

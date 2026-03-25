@@ -13,7 +13,7 @@ const updateProgress = (req, res) => {
         derniere_position: derniere_position || 0
     };
 
-    lessonProgressModel.upsertProgress(progress, (err) => {
+    void lessonProgressModel.upsertProgress(progress, (err) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -32,7 +32,7 @@ const getCourseProgress = (req, res) => {
     const { coursId } = req.params;
     const eleve_id = req.user.id;
 
-    lessonProgressModel.getProgressByCourse(eleve_id, coursId, (err, result) => {
+    void lessonProgressModel.getProgressByCourse(eleve_id, coursId, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);

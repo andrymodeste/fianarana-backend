@@ -4,9 +4,10 @@ const courseController = require("../controllers/courseController");
 const lessonController = require("../controllers/lessonController");
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
+const profVerified = require("../middleware/professorVerifiedMiddleware");
 const upload = require("../middleware/uploadMiddleware");
 
-const prof = [authMiddleware, roleMiddleware("professeur")];
+const prof = [authMiddleware, roleMiddleware("professeur"), profVerified];
 
 router.get("/",         courseController.getAllCourses);
 router.get("/mes-cours", ...prof, courseController.getMyCourses);

@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const userModel = require("../models/userModel");
 
 const getProfile = (req, res) => {
-    userModel.findUserById(req.user.id, (err, result) => {
+    void userModel.findUserById(req.user.id, (err, result) => {
         if (err) return res.status(500).json(err);
         if (result.length === 0) return res.status(404).json({ message: "Utilisateur introuvable" });
         res.json({ user: result[0] });
@@ -13,7 +13,7 @@ const updateProfile = (req, res) => {
     const { nom, prenom, telephone, ville, region } = req.body;
     const data = { nom, prenom, telephone, ville, region };
     if (req.file) data.photo_url = `/uploads/${req.file.filename}`;
-    userModel.updateUser(req.user.id, data, (err) => {
+    void userModel.updateUser(req.user.id, data, (err) => {
         if (err) return res.status(500).json(err);
         userModel.findUserById(req.user.id, (err2, result) => {
             if (err2) return res.status(500).json(err2);
