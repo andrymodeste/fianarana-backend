@@ -10,7 +10,6 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => { logout(); navigate("/"); };
-  const fullName = user ? `${user.prenom} ${user.nom}` : "";
 
   const dashLink = user?.role === "admin" ? "/admin" : user?.role === "professeur" ? "/professeur" : "/dashboard";
 

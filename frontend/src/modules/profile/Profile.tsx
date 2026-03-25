@@ -4,7 +4,7 @@ import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import { FiEdit2, FiAward, FiBookOpen, FiStar, FiPhone, FiMapPin } from "react-icons/fi";
 import { photoUrl } from "../../utils/photoUrl";
-import type { Badge, Certificat, Inscription, User } from "../../types";
+import type { Badge, Certificat, User } from "../../types";
 
 export default function Profile() {
   const { user: authUser } = useAuth();
