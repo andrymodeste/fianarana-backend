@@ -2,7 +2,7 @@ const certificatModel = require("../models/certificatModel");
 
 const getMyCertificats = (req, res) => {
 
-    certificatModel.getCertificatsByEleve(req.user.id, (err, result) => {
+    void certificatModel.getCertificatsByEleve(req.user.id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -20,7 +20,7 @@ const verifyCertificat = (req, res) => {
 
     const { code } = req.params;
 
-    certificatModel.verifyCertificat(code, (err, result) => {
+    void certificatModel.verifyCertificat(code, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);

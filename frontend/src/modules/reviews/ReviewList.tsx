@@ -3,6 +3,7 @@ import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import type { Avis } from "../../types";
 import { FiStar, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { photoUrl } from "../../utils/photoUrl";
 
 interface Props { coursId: number; avis: Avis[]; avgNote: number; isEnrolled: boolean; }
 
@@ -87,7 +88,7 @@ export default function ReviewList({ coursId, avis: initialAvis, avgNote, isEnro
         {avis.length === 0 && <p className="empty-msg">Aucun avis pour ce cours.</p>}
         {avis.map(a => (
           <div key={a.id} className="review-card">
-            <img src={a.photo_url || `https://ui-avatars.com/api/?name=${a.prenom}+${a.nom}&background=7B5EA7&color=fff`} alt="avatar" />
+            <img src={photoUrl(a.photo_url) || `https://ui-avatars.com/api/?name=${a.prenom}+${a.nom}&background=7B5EA7&color=fff`} alt="avatar" />
             <div className="review-content">
               <div className="review-header">
                 <strong>{a.prenom} {a.nom}</strong>

@@ -25,7 +25,7 @@ const register = async (req, res) => {
             region
         };
 
-        userModel.createUser(user, (err, result) => {
+        void userModel.createUser(user, (err, result) => {
 
             if (err) {
                 if (err.code === "ER_DUP_ENTRY") {
@@ -39,7 +39,11 @@ const register = async (req, res) => {
                 nom,
                 prenom,
                 email,
-                role: role || "eleve"
+                role: role || "eleve",
+                telephone: telephone || null,
+                ville: ville || null,
+                region: region || null,
+                photo_url: null
             };
 
             const token = generateToken(newUser);
@@ -64,7 +68,7 @@ const login = (req, res) => {
 
     const { email, password } = req.body;
 
-    userModel.findUserByEmail(email, async (err, result) => {
+    void userModel.findUserByEmail(email, async (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -103,7 +107,10 @@ const login = (req, res) => {
                 prenom: user.prenom,
                 email: user.email,
                 role: user.role,
-                photo_url: user.photo_url
+                photo_url: user.photo_url,
+                telephone: user.telephone,
+                ville: user.ville,
+                region: user.region
             }
         });
 

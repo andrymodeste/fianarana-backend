@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FiStar, FiUsers, FiClock, FiLock } from "react-icons/fi";
+import { photoUrl } from "../../utils/photoUrl";
 import type { Cours } from "../../types";
 
 interface Props { cours: Cours; }
@@ -8,7 +9,7 @@ export default function CourseCard({ cours }: Props) {
   return (
     <Link to={`/cours/${cours.id}`} className="course-card">
       <div className="course-thumb">
-        <img src={cours.image_url || "/placeholder-course.jpg"} alt={cours.titre} />
+        <img src={photoUrl(cours.image_url) || "/placeholder-course.jpg"} alt={cours.titre} />
         {cours.est_premium ? (
           <span className="badge-premium"><FiLock size={10} /> Premium</span>
         ) : (

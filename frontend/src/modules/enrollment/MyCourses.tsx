@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import type { Inscription } from "../../types";
 import { FiBookOpen, FiPlay, FiCheck } from "react-icons/fi";
+import { photoUrl } from "../../utils/photoUrl";
 
 export default function MyCourses() {
   const [cours, setCours] = useState<Inscription[]>([]);
@@ -29,7 +30,7 @@ export default function MyCourses() {
         <div className="my-courses-list">
           {cours.map(c => (
             <div key={c.id} className="my-course-card">
-              <img src={c.image_url || "/placeholder-course.jpg"} alt={c.titre} />
+              <img src={photoUrl(c.image_url) || "/placeholder-course.jpg"} alt={c.titre} />
               <div className="my-course-info">
                 <h3>{c.titre}</h3>
                 <p className="my-course-prof">{c.professeur_prenom} {c.professeur_nom}</p>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import { FiUsers, FiBookOpen, FiDollarSign, FiStar, FiAlertCircle, FiCheck } from "react-icons/fi";
 
-interface Stats { nb_utilisateurs: number; nb_nouveaux_ce_mois: number; nb_cours_publies: number; nb_abonnements_actifs: number; revenus_total: number; revenus_ce_mois: number; nb_cours_en_attente: number; nb_profs_en_attente: number; top_cours: any[]; top_professeurs: any[]; }
+interface Stats { nb_utilisateurs: number; nb_nouveaux_ce_mois: number; nb_cours_publies: number; nb_abonnements_actifs: number; revenus_total: number; revenus_ce_mois: number; nb_cours_en_attente: number; nb_profs_en_attente: number; nb_lecons_en_attente: number; top_cours: any[]; top_professeurs: any[]; }
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -36,11 +36,16 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {(stats.nb_cours_en_attente > 0 || stats.nb_profs_en_attente > 0) && (
+      {(stats.nb_cours_en_attente > 0 || stats.nb_profs_en_attente > 0 || stats.nb_lecons_en_attente > 0) && (
         <div className="admin-alerts">
           {stats.nb_cours_en_attente > 0 && (
             <Link to="/admin/validation-cours" className="admin-alert-card">
               <FiAlertCircle /> <strong>{stats.nb_cours_en_attente}</strong> cours en attente de validation
+            </Link>
+          )}
+          {stats.nb_lecons_en_attente > 0 && (
+            <Link to="/admin/validation-cours" className="admin-alert-card">
+              <FiAlertCircle /> <strong>{stats.nb_lecons_en_attente}</strong> leçons en attente de validation
             </Link>
           )}
           {stats.nb_profs_en_attente > 0 && (

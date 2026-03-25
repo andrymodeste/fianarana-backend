@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
+import { photoUrl } from "../../utils/photoUrl";
 import { FiCamera } from "react-icons/fi";
 
 const REGIONS = ["Analamanga","Vakinankaratra","Itasy","Bongolava","Matsiatra Ambony","Amoron'i Mania","Vatovavy","Fitovinany","Ihorombe","Atsimo-Atsinanana","Atsinanana","Analanjirofo","Alaotra-Mangoro","Boeny","Sofia","Betsiboka","Melaky","Atsimo-Andrefana","Androy","Anosy","Menabe","Diana","Sava"];
@@ -14,15 +15,30 @@ export default function EditProfile() {
   const [preview, setPreview] = useState<string>("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    if (user) {
-      setForm({ nom: user.nom || "", prenom: user.prenom || "", telephone: (user as any).telephone || "", ville: (user as any).ville || "", region: (user as any).region || "" });
-      setPreview(user.photo_url || "");
-    }
-  }, [user]);
+    api.get("/utilisateurs/profil").then(r => {
+      const u = r.data?.user;
+      if (u) {
+        setForm({
+          nom: u.nom || "",
+          prenom: u.prenom || "",
+          telephone: u.telephone || "",
+          ville: u.ville || "",
+          region: u.region || ""
+        });
+        setPreview(photoUrl(u.photo_url));
+      }
+    }).catch(() => {
+      if (user) {
+        setForm({ nom: user.nom || "", prenom: user.prenom || "", telephone: user.telephone || "", ville: user.ville || "", region: user.region || "" });
+        setPreview(photoUrl(user.photo_url));
+      }
+    }).finally(() => setFetching(false));
+  }, []);
 
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -49,6 +65,8 @@ export default function EditProfile() {
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm({ ...form, [k]: e.target.value });
+
+  if (fetching) return <div className="loading-page"><div className="spinner" /></div>;
 
   return (
     <div className="page-container">

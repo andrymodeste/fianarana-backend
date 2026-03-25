@@ -54,6 +54,7 @@ export interface Lecon {
   duree_minutes: number;
   est_gratuite: number;
   est_telechargeable: number;
+  statut?: "valide" | "en_attente";
 }
 
 export interface Categorie {

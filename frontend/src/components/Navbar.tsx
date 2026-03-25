@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { photoUrl } from "../utils/photoUrl";
 import { FiMenu, FiX, FiMessageSquare } from "react-icons/fi";
 
 export default function Navbar() {
@@ -28,28 +29,11 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               <Link to="/messages" className="navbar-icon-btn" title="Messages"><FiMessageSquare size={20} /></Link>
-              <Link to="/profil" className="navbar-avatar-menu">
+              <Link to={dashLink} className="navbar-avatar-link" title="Mon espace">
                 <div className="navbar-avatar">
-                  {user?.photo_url ? <img src={user.photo_url} alt="" /> : user?.prenom?.charAt(0).toUpperCase()}
+                  {user?.photo_url ? <img src={photoUrl(user.photo_url)} alt="" /> : user?.prenom?.charAt(0).toUpperCase()}
                 </div>
-                <div className="navbar-dropdown">
-                  <div className="dropdown-header">
-                    <strong>{fullName}</strong>
-                    <span>{user?.email}</span>
-                  </div>
-                  <hr />
-                  <Link to={dashLink} className="dropdown-item">Tableau de bord</Link>
-                  <Link to="/mes-cours" className="dropdown-item">Mes cours</Link>
-                  <Link to="/messages" className="dropdown-item">Messages</Link>
-                  <Link to="/badges" className="dropdown-item">Badges & Certificats</Link>
-                  {user?.role === "professeur" && <Link to="/professeur/mon-profil" className="dropdown-item">Profil professionnel</Link>}
-                  {user?.role === "admin" && <Link to="/admin" className="dropdown-item">Administration</Link>}
-                  <hr />
-                  <Link to="/profil/modifier" className="dropdown-item">Modifier le profil</Link>
-                  <Link to="/profil/mot-de-passe" className="dropdown-item">Changer le mot de passe</Link>
-                  <hr />
-                  <button onClick={handleLogout} className="dropdown-item logout-btn">Se déconnecter</button>
-                </div>
+                <span className="navbar-username">{user?.prenom}</span>
               </Link>
             </>
           ) : (

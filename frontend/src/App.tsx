@@ -3,6 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Sidebar from "./components/Sidebar";
 import "./index.css";
 
 // Pages statiques
@@ -60,12 +61,26 @@ import CatalogManagement   from "./modules/admin/catalog/CatalogManagement";
 import AvisModeration      from "./modules/admin/moderation/AvisModeration";
 import AdminNotifications  from "./modules/admin/notifications/AdminNotifications";
 
+/** Layout public (sans sidebar) */
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="app-layout">
       <Navbar />
       <main className="app-main">{children}</main>
       <Footer />
+    </div>
+  );
+}
+
+/** Layout authentifié avec sidebar à gauche */
+function AuthLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="app-layout">
+      <Navbar />
+      <div className="app-body">
+        <Sidebar />
+        <main className="app-content">{children}</main>
+      </div>
     </div>
   );
 }
@@ -92,14 +107,14 @@ function AppRoutes() {
       <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
 
       {/* Elève - protégées */}
-      <Route path="/dashboard"     element={<RequireAuth><Layout><StudentDashboard /></Layout></RequireAuth>} />
-      <Route path="/mes-cours"     element={<RequireAuth><Layout><MyCourses /></Layout></RequireAuth>} />
-      <Route path="/profil"        element={<RequireAuth><Layout><Profile /></Layout></RequireAuth>} />
-      <Route path="/profil/modifier" element={<RequireAuth><Layout><EditProfile /></Layout></RequireAuth>} />
-      <Route path="/profil/mot-de-passe" element={<RequireAuth><Layout><ChangePassword /></Layout></RequireAuth>} />
-      <Route path="/messages"      element={<RequireAuth><Layout><MessagingPage /></Layout></RequireAuth>} />
-      <Route path="/badges"        element={<RequireAuth><Layout><BadgesPage /></Layout></RequireAuth>} />
-      <Route path="/quiz/historique" element={<RequireAuth><Layout><QuizHistory /></Layout></RequireAuth>} />
+      <Route path="/dashboard"     element={<RequireAuth><AuthLayout><StudentDashboard /></AuthLayout></RequireAuth>} />
+      <Route path="/mes-cours"     element={<RequireAuth><AuthLayout><MyCourses /></AuthLayout></RequireAuth>} />
+      <Route path="/profil"        element={<RequireAuth><AuthLayout><Profile /></AuthLayout></RequireAuth>} />
+      <Route path="/profil/modifier" element={<RequireAuth><AuthLayout><EditProfile /></AuthLayout></RequireAuth>} />
+      <Route path="/profil/mot-de-passe" element={<RequireAuth><AuthLayout><ChangePassword /></AuthLayout></RequireAuth>} />
+      <Route path="/messages"      element={<RequireAuth><AuthLayout><MessagingPage /></AuthLayout></RequireAuth>} />
+      <Route path="/badges"        element={<RequireAuth><AuthLayout><BadgesPage /></AuthLayout></RequireAuth>} />
+      <Route path="/quiz/historique" element={<RequireAuth><AuthLayout><QuizHistory /></AuthLayout></RequireAuth>} />
 
       {/* Lecteur de cours (sans footer/navbar classiques) */}
       <Route path="/cours/:coursId/apprendre"           element={<RequireAuth><LessonPlayer /></RequireAuth>} />
@@ -107,20 +122,20 @@ function AppRoutes() {
       <Route path="/quiz/:quizId"                       element={<RequireAuth><QuizPlayer /></RequireAuth>} />
 
       {/* Professeur */}
-      <Route path="/professeur"                          element={<RequireAuth role="professeur"><Layout><TeacherDashboard /></Layout></RequireAuth>} />
-      <Route path="/professeur/mon-profil"               element={<RequireAuth role="professeur"><Layout><TeacherProfile /></Layout></RequireAuth>} />
-      <Route path="/professeur/nouveau-cours"            element={<RequireAuth role="professeur"><Layout><CreateCourse /></Layout></RequireAuth>} />
-      <Route path="/professeur/cours/:coursId/lecons"    element={<RequireAuth role="professeur"><Layout><LessonManager /></Layout></RequireAuth>} />
-      <Route path="/professeur/cours/:coursId/quiz/:leconId" element={<RequireAuth role="professeur"><Layout><QuizManager /></Layout></RequireAuth>} />
+      <Route path="/professeur"                          element={<RequireAuth role="professeur"><AuthLayout><TeacherDashboard /></AuthLayout></RequireAuth>} />
+      <Route path="/professeur/mon-profil"               element={<RequireAuth role="professeur"><AuthLayout><TeacherProfile /></AuthLayout></RequireAuth>} />
+      <Route path="/professeur/nouveau-cours"            element={<RequireAuth role="professeur"><AuthLayout><CreateCourse /></AuthLayout></RequireAuth>} />
+      <Route path="/professeur/cours/:coursId/lecons"    element={<RequireAuth role="professeur"><AuthLayout><LessonManager /></AuthLayout></RequireAuth>} />
+      <Route path="/professeur/cours/:coursId/quiz/:leconId" element={<RequireAuth role="professeur"><AuthLayout><QuizManager /></AuthLayout></RequireAuth>} />
 
       {/* Admin */}
-      <Route path="/admin"                     element={<RequireAuth role="admin"><Layout><AdminDashboard /></Layout></RequireAuth>} />
-      <Route path="/admin/utilisateurs"        element={<RequireAuth role="admin"><Layout><UserManagement /></Layout></RequireAuth>} />
-      <Route path="/admin/validation-cours"    element={<RequireAuth role="admin"><Layout><CourseValidation /></Layout></RequireAuth>} />
-      <Route path="/admin/validation-profs"    element={<RequireAuth role="admin"><Layout><TeacherValidation /></Layout></RequireAuth>} />
-      <Route path="/admin/catalogue"           element={<RequireAuth role="admin"><Layout><CatalogManagement /></Layout></RequireAuth>} />
-      <Route path="/admin/avis"                element={<RequireAuth role="admin"><Layout><AvisModeration /></Layout></RequireAuth>} />
-      <Route path="/admin/notifications"       element={<RequireAuth role="admin"><Layout><AdminNotifications /></Layout></RequireAuth>} />
+      <Route path="/admin"                     element={<RequireAuth role="admin"><AuthLayout><AdminDashboard /></AuthLayout></RequireAuth>} />
+      <Route path="/admin/utilisateurs"        element={<RequireAuth role="admin"><AuthLayout><UserManagement /></AuthLayout></RequireAuth>} />
+      <Route path="/admin/validation-cours"    element={<RequireAuth role="admin"><AuthLayout><CourseValidation /></AuthLayout></RequireAuth>} />
+      <Route path="/admin/validation-profs"    element={<RequireAuth role="admin"><AuthLayout><TeacherValidation /></AuthLayout></RequireAuth>} />
+      <Route path="/admin/catalogue"           element={<RequireAuth role="admin"><AuthLayout><CatalogManagement /></AuthLayout></RequireAuth>} />
+      <Route path="/admin/avis"                element={<RequireAuth role="admin"><AuthLayout><AvisModeration /></AuthLayout></RequireAuth>} />
+      <Route path="/admin/notifications"       element={<RequireAuth role="admin"><AuthLayout><AdminNotifications /></AuthLayout></RequireAuth>} />
 
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />

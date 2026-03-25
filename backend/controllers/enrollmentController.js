@@ -5,7 +5,7 @@ const enrollUser = (req, res) => {
     const { cours_id } = req.body;
     const eleve_id = req.user.id;
 
-    enrollmentModel.getEnrollment(eleve_id, cours_id, (err, result) => {
+    void enrollmentModel.getEnrollment(eleve_id, cours_id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);
@@ -38,7 +38,7 @@ const getMyCourses = (req, res) => {
 
     const eleve_id = req.user.id;
 
-    enrollmentModel.getEnrollmentsByUser(eleve_id, (err, result) => {
+    void enrollmentModel.getEnrollmentsByUser(eleve_id, (err, result) => {
 
         if (err) {
             return res.status(500).json(err);

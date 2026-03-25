@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import ReviewList from "../reviews/ReviewList";
 import type { Cours, Lecon, Avis } from "../../types";
 import { FiStar, FiClock, FiUsers, FiPlay, FiLock, FiDownload } from "react-icons/fi";
+import { photoUrl } from "../../utils/photoUrl";
 
 export default function CourseDetail() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +40,7 @@ export default function CourseDetail() {
     if (!isAuthenticated) return navigate("/connexion");
     setEnrolling(true);
     try {
-      await api.post("/inscriptions", { cours_id: Number(id) });
+      await api.post("/inscriptions/inscrire", { cours_id: Number(id) });
       setEnrolled(true);
     } catch (err: any) {
       if (err.response?.status === 400) setEnrolled(true);
@@ -68,7 +69,7 @@ export default function CourseDetail() {
           <p className="course-niveau">{course.niveau_nom} • {course.langue === "fr" ? "Français" : course.langue === "mg" ? "Malgache" : "Anglais"}</p>
         </div>
         <div className="course-detail-cta">
-          <img src={course.image_url || "/placeholder-course.jpg"} alt={course.titre} className="course-detail-img" />
+          <img src={photoUrl(course.image_url) || "/placeholder-course.jpg"} alt={course.titre} className="course-detail-img" />
           <div className="course-price-box">
             {course.est_premium ? (
               <div className="price-big">{course.prix?.toLocaleString()} Ar</div>
@@ -112,7 +113,7 @@ export default function CourseDetail() {
         <section className="teacher-section">
           <h2>Votre professeur</h2>
           <Link to={`/professeur/${course.professeur_id}`} className="teacher-card">
-            <img src={course.professeur_photo || `https://ui-avatars.com/api/?name=${course.professeur_prenom}+${course.professeur_nom}&background=7B5EA7&color=fff&size=56`} alt="prof" />
+            <img src={photoUrl(course.professeur_photo) || `https://ui-avatars.com/api/?name=${course.professeur_prenom}+${course.professeur_nom}&background=7B5EA7&color=fff&size=56`} alt="prof" />
             <div>
               <div className="teacher-name">{course.professeur_prenom} {course.professeur_nom}</div>
               <div className="teacher-sub"><FiStar size={13} /> {parseFloat(String(avgNote)).toFixed(1)}</div>

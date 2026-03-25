@@ -2,14 +2,14 @@ const profilProfesseurModel = require("../models/profilProfesseurModel");
 const db = require("../config/db");
 
 const getMyProfil = (req, res) => {
-    profilProfesseurModel.getProfilByUserId(req.user.id, (err, result) => {
+    void profilProfesseurModel.getProfilByUserId(req.user.id, (err, result) => {
         if (err) return res.status(500).json(err);
         res.json({ profil: result[0] || null });
     });
 };
 
 const getPublicProfil = (req, res) => {
-    profilProfesseurModel.getProfilByUserId(req.params.id, (err, result) => {
+    void profilProfesseurModel.getProfilByUserId(req.params.id, (err, result) => {
         if (err) return res.status(500).json(err);
         if (!result.length) return res.status(404).json({ message: "Profil introuvable" });
         const profil = result[0];
@@ -27,7 +27,7 @@ const getPublicProfil = (req, res) => {
 const updateProfil = (req, res) => {
     const { bio, specialites, diplomes, experience_annees, tarif_heure, disponibilite } = req.body;
     const profil = { utilisateur_id: req.user.id, bio, specialites, diplomes, experience_annees, tarif_heure, disponibilite };
-    profilProfesseurModel.createOrUpdateProfil(profil, (err) => {
+    void profilProfesseurModel.createOrUpdateProfil(profil, (err) => {
         if (err) return res.status(500).json(err);
         res.json({ message: "Profil mis à jour" });
     });
@@ -43,7 +43,7 @@ const getStudentStats = (req, res) => {
     JOIN utilisateurs u ON i.eleve_id = u.id
     WHERE c.professeur_id = ?
     ORDER BY i.inscrit_le DESC`;
-    db.query(sql, [professeurId], (err, result) => {
+    void db.query(sql, [professeurId], (err, result) => {
         if (err) return res.status(500).json(err);
         res.json({ eleves: result });
     });

@@ -4,6 +4,7 @@ import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import type { Inscription, Abonnement, Notification } from "../../types";
 import { FiBookOpen, FiAward, FiBell, FiCalendar, FiPlay, FiCheck, FiTrash2 } from "react-icons/fi";
+import { photoUrl } from "../../utils/photoUrl";
 
 export default function StudentDashboard() {
   const { user } = useAuth();
@@ -84,7 +85,7 @@ export default function StudentDashboard() {
             ) : (
               enCours.slice(0, 4).map(c => (
                 <div key={c.id} className="dashboard-course-item">
-                  <img src={c.image_url || "/placeholder-course.jpg"} alt="" />
+                  <img src={photoUrl(c.image_url) || "/placeholder-course.jpg"} alt="" />
                   <div className="dci-info">
                     <div className="dci-titre">{c.titre}</div>
                     <div className="progress-wrap">
