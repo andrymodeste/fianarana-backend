@@ -12,7 +12,7 @@ const getProfile = (req, res) => {
 const updateProfile = (req, res) => {
     const { nom, prenom, telephone, ville, region } = req.body;
     const data = { nom, prenom, telephone, ville, region };
-    if (req.file) data.photo_url = `/uploads/${req.file.filename}`;
+    if (req.file) data.photo_url = req.file.path || `/uploads/${req.file.filename}`;
     void userModel.updateUser(req.user.id, data, (err) => {
         if (err) return res.status(500).json(err);
         userModel.findUserById(req.user.id, (err2, result) => {

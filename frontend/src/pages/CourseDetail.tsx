@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { photoUrl } from "../utils/photoUrl";
 import type { Cours, Lecon } from "../types";
 import {
   FiStar,
@@ -69,10 +70,7 @@ export default function CourseDetail() {
   if (loading) return <div className="loading-page"><div className="spinner" /></div>;
   if (!course) return <div className="error-page"><p>Cours introuvable.</p></div>;
 
-  const raw = course.image_url || "";
-  const thumbnail = raw.startsWith("/uploads/")
-    ? `http://localhost:5000${raw}`
-    : raw || `https://picsum.photos/seed/${course.id}/800/450`;
+  const thumbnail = photoUrl(course.image_url) || `https://picsum.photos/seed/${course.id}/800/450`;
 
   const professeurNom = `${course.professeur_prenom || ""} ${course.professeur_nom || ""}`.trim();
 

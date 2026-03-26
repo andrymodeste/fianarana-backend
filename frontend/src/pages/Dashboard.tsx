@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { photoUrl } from "../utils/photoUrl";
 import type { Inscription, Abonnement } from "../types";
 import { FiBookOpen, FiClock, FiAward, FiCalendar } from "react-icons/fi";
 
@@ -119,7 +120,7 @@ export default function Dashboard() {
             <div className="my-courses-list">
               {mesCours.map((inscription) => {
                 const profNom = `${inscription.professeur_prenom || ""} ${inscription.professeur_nom || ""}`.trim();
-                const imgSrc = inscription.image_url || `https://picsum.photos/seed/${inscription.cours_id}/120/68`;
+                const imgSrc = photoUrl(inscription.image_url) || `https://picsum.photos/seed/${inscription.cours_id}/120/68`;
                 return (
                   <Link to={`/courses/${inscription.cours_id}`} key={inscription.id} className="my-course-item">
                     <img src={imgSrc} alt={inscription.titre} />

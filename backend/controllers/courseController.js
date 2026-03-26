@@ -2,7 +2,7 @@ const courseModel = require("../models/courseModel");
 
 const createCourse = (req, res) => {
     const { titre, description, matiere_id, niveau_id, est_premium, prix, langue } = req.body;
-    let image_url = req.file ? `/uploads/${req.file.filename}` : (req.body.image_url || null);
+    let image_url = req.file ? (req.file.path || `/uploads/${req.file.filename}`) : (req.body.image_url || null);
     if (!titre || !titre.trim()) return void res.status(400).json({ message: "Le titre est requis" });
     if (!matiere_id || !niveau_id) return void res.status(400).json({ message: "La matière et le niveau sont requis" });
     const course = { professeur_id: req.user.id, matiere_id, niveau_id, titre, description, image_url, est_premium: est_premium || 0, prix: prix || 0, langue: langue || 'fr' };
@@ -54,7 +54,7 @@ const updateCourse = (req, res) => {
         }
         const { titre, description, matiere_id, niveau_id, est_premium, prix, langue } = req.body;
         const data = { titre, description, matiere_id, niveau_id, est_premium, prix, langue };
-        if (req.file) data.image_url = `/uploads/${req.file.filename}`;
+        if (req.file) data.image_url = req.file.path || `/uploads/${req.file.filename}`;
         courseModel.updateCourse(id, data, (err2, result) => {
             if (err2) return res.status(500).json(err2);
             if (result.affectedRows === 0) return res.status(404).json({ message: "Cours introuvable" });

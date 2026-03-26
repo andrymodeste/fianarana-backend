@@ -17,8 +17,8 @@ const createLesson = (req, res) => {
 
         const lesson = { cours_id, titre, description, video_url, pdf_url, ordre, duree_minutes: duree_minutes || 0, est_gratuite: est_gratuite || 0, est_telechargeable: est_telechargeable !== undefined ? est_telechargeable : 1, statut: leconStatut };
         if (req.files) {
-            if (req.files.video) lesson.video_url = `/uploads/${req.files.video[0].filename}`;
-            if (req.files.pdf)   lesson.pdf_url   = `/uploads/${req.files.pdf[0].filename}`;
+            if (req.files.video) lesson.video_url = req.files.video[0].path || `/uploads/${req.files.video[0].filename}`;
+            if (req.files.pdf)   lesson.pdf_url   = req.files.pdf[0].path || `/uploads/${req.files.pdf[0].filename}`;
         }
         lessonModel.createLesson(lesson, (err2, result) => {
             if (err2) return res.status(500).json(err2);
@@ -49,8 +49,8 @@ const updateLesson = (req, res) => {
     const { titre, description, video_url, pdf_url, ordre, duree_minutes, est_gratuite, est_telechargeable } = req.body;
     const data = { titre, description, video_url, pdf_url, ordre, duree_minutes, est_gratuite, est_telechargeable };
     if (req.files) {
-        if (req.files.video) data.video_url = `/uploads/${req.files.video[0].filename}`;
-        if (req.files.pdf)   data.pdf_url   = `/uploads/${req.files.pdf[0].filename}`;
+        if (req.files.video) data.video_url = req.files.video[0].path || `/uploads/${req.files.video[0].filename}`;
+        if (req.files.pdf)   data.pdf_url   = req.files.pdf[0].path || `/uploads/${req.files.pdf[0].filename}`;
     }
     void lessonModel.updateLesson(req.params.id, data, (err, result) => {
         if (err) return res.status(500).json(err);

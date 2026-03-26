@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { photoUrl } from "../utils/photoUrl";
 import type { Cours } from "../types";
 import { FiPlus, FiBookOpen, FiUsers } from "react-icons/fi";
 
@@ -75,9 +76,7 @@ export default function Instructor() {
           ) : (
             <div className="instructor-courses">
               {courses.map((course) => {
-                const imgSrc = course.image_url
-                  ? (course.image_url.startsWith("/uploads/") ? `http://localhost:5000${course.image_url}` : course.image_url)
-                  : `https://picsum.photos/seed/${course.id}/120/68`;
+                const imgSrc = photoUrl(course.image_url) || `https://picsum.photos/seed/${course.id}/120/68`;
                 return (
                   <div key={course.id} className="instructor-course-item">
                     <img src={imgSrc} alt={course.titre} />

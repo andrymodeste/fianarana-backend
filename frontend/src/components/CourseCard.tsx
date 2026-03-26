@@ -1,16 +1,14 @@
 import { Link } from "react-router-dom";
 import type { Cours } from "../types";
 import { FiStar } from "react-icons/fi";
+import { photoUrl } from "../utils/photoUrl";
 
 interface Props {
   course: Cours;
 }
 
 export default function CourseCard({ course }: Props) {
-  const raw = course.image_url || "";
-  const thumbnail = raw.startsWith("/uploads/")
-    ? `http://localhost:5000${raw}`
-    : raw || `https://picsum.photos/seed/${course.id}/320/180`;
+  const thumbnail = photoUrl(course.image_url) || `https://picsum.photos/seed/${course.id}/320/180`;
 
   const professeurNom = `${course.professeur_prenom || ""} ${course.professeur_nom || ""}`.trim();
 
